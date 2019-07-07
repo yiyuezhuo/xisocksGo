@@ -1,0 +1,6 @@
+{
+    "RemoteIp": "your_hostname",
+	"RemotePort": 80,
+	"LocalIp": "127.0.0.1",
+	"LocalPort": 12341 
+}
