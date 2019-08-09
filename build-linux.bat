@@ -1,7 +1,7 @@
 set GOOS=linux
 go env
-go build -o bin/server github.com/yiyuezhuo/xisocksGo/server
-go build -o bin/client github.com/yiyuezhuo/xisocksGo/client
+go build -ldflags "-w" -o bin/server github.com/yiyuezhuo/xisocksGo/server
+go build -ldflags "-w" -o bin/client github.com/yiyuezhuo/xisocksGo/client
 copy config-client.json bin
 copy config-server.json bin
 xcopy static bin\static\ /y

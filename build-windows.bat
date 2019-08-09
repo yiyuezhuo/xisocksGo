@@ -1,6 +1,6 @@
 go env
-go build -o bin_windows/server.exe github.com/yiyuezhuo/xisocksGo/server
-go build -o bin_windows/client.exe github.com/yiyuezhuo/xisocksGo/client
+go build -ldflags "-w" -o bin_windows/server.exe github.com/yiyuezhuo/xisocksGo/server
+go build -ldflags "-w" -o bin_windows/client.exe github.com/yiyuezhuo/xisocksGo/client
 copy config-client.json bin_windows
 copy config-server.json bin_windows
 xcopy static bin_windows\static\ /y
