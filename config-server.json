@@ -1,4 +1,7 @@
 {
 	"ListenIp": "0.0.0.0",
-	"ListenPort": 80
+	"ListenPort": 443,
+	"TLS": true,
+	"Crt":"server.crt",
+	"Key":"server.key"
 }

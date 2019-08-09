@@ -136,6 +136,13 @@ func main() {
 
 	fmt.Println(addr, upgrader)
 	//var upgrader := websocket.Upgrader{}
-	log.Fatal(http.ListenAndServe(addr, nil))
+	if !config.TLS {
+		fmt.Println("launch without TLS")
+		log.Fatal(http.ListenAndServe(addr, nil))
+	} else {
+		fmt.Println("launch with TLS")
+		fmt.Println("crt:", config.Crt, "key", config.Key)
+		log.Fatal(http.ListenAndServeTLS(addr, config.Crt, config.Key, nil))
+	}
 	fmt.Print("wtf")
 }

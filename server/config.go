@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -10,6 +11,9 @@ import (
 type Config struct {
 	ListenIp   string
 	ListenPort int
+	TLS        bool
+	Crt        string
+	Key        string
 }
 
 func loadConfig() Config {
@@ -24,5 +28,7 @@ func loadConfig() Config {
 	if err != nil {
 		log.Panic(err)
 	}
+	fmt.Println("ListenIp:", config.ListenIp, "ListenPort:", config.ListenPort, "TLS:", config.TLS,
+		"crt:", config.Crt, "key:", config.Key)
 	return config
 }

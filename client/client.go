@@ -37,19 +37,27 @@ func main() {
 			os.Exit(1)
 		}
 		// Handle connections in a new goroutine.
-		go handleRequest(conn, RemoteIp+":"+RemotePort)
+		go handleRequest(conn, RemoteIp+":"+RemotePort, config.TLS)
 	}
 }
 
 // Handles incoming requests.
-func handleRequest(local_c net.Conn, addr string) {
+func handleRequest(local_c net.Conn, addr string, TLS bool) {
 	// Make a buffer to hold incoming data.
 	defer local_c.Close()
 
-	u := url.URL{Scheme: "ws", Host: addr, Path: "/upload"}
+	var u url.URL
+
+	if !TLS {
+		u = url.URL{Scheme: "ws", Host: addr, Path: "/upload"}
+	} else {
+		u = url.URL{Scheme: "wss", Host: addr, Path: "/upload"}
+	}
 	log.Printf("connecting to %s", u.String())
 
+	fmt.Println("before dial")
 	remote_c, _, err := websocket.DefaultDialer.Dial(u.String(), nil)
+	fmt.Println("after dial")
 	if err != nil {
 		log.Println("Error Dial:", err)
 		return

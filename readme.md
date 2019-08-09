@@ -14,13 +14,13 @@ This is a port of [Python-version](https://github.com/yiyuezhuo/xisock0). The Py
 
 ## build
 
-### Windows
+### From Windows
 
 ```
 $ build-linux
 $ build-windows
 ```
 
-### Linux
+### From Linux
 
 TODO

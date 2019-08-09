@@ -2,3 +2,7 @@ bin/
 bin_windows/
 release/
 *.zip
+*.crt
+*.key
+*.exe
+*.bak

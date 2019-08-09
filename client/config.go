@@ -12,6 +12,7 @@ type Config struct {
 	RemotePort int
 	LocalIp    string
 	LocalPort  int
+	TLS        bool
 }
 
 func loadConfig() Config {
