@@ -11,13 +11,7 @@ You can use this tool with or without hostname, CDN and TLS. The default config 
 
 * Download respective version into your local computer(client) and VPS(server) from [release page](https://github.com/yiyuezhuo/xisocksGo/releases).
 * In client, replace config-client.json item "your_hostname" with your hostname such as "xisocks.com", which have been "protected" by CDN such as cloudflare. Then CCP internet cops can't find your real IP. 
-
-
-
-
-* See some TLS 
-
-
+* See some TLS [tutorials](https://guide.v2fly.org/en_US/advanced/tls.html#register-a-domain) to get `server.crt` and `server.key` and placing them into server root.
 * In client, run `client.exe`(windows) or `./client`(linux)
 * In server, run `server.exe`(windows) or `./server`(linux)
 
@@ -54,6 +48,8 @@ TODO
 ## Fake website
 
 In fact, `client` connect to `host_name/upload` to proxy data, if a disgusting CCP internet cop try to access `host_name`,
-he will get a [sadpanda](https://knowyourmeme.com/memes/sad-panda) to mock their blocking policy:
+he will get a page including only a [Sad Panda](https://knowyourmeme.com/memes/sad-panda) image to mock their blocking policy:
  
 <img src="static/sadpanda.jpg">
+
+You can edit `Sadpanda` `fakewebsite/fakewebsite.go` and build it again to show a more modest page to cheat CCP cop.
