@@ -28,7 +28,7 @@ func websocket_to_socket(websocket_conn *websocket.Conn, target_conn net.Conn) {
 	}
 }
 func socket_to_websocket(websocket_conn *websocket.Conn, target_conn net.Conn) {
-	buf := make([]byte, 2048)
+	buf := make([]byte, 8192)
 	for {
 		count, err := target_conn.Read(buf)
 		if err != nil {
@@ -61,6 +61,19 @@ func upload(w http.ResponseWriter, r *http.Request) {
 		log.Println("Error c.ReadMessage:", err)
 		return
 	}
+
+	//fmt.Println("message[0]:", message[0])
+
+	if message[0] == 5 { // socks 5
+		fmt.Println("Assuming socks5")
+		update_socks5_proxy(c, mt, message)
+	} else {
+		fmt.Println("Assuming http")
+		update_http_proxy(c, mt, message)
+	}
+}
+
+func update_http_proxy(c *websocket.Conn, mt int, message []byte) {
 	log.Println("First read:", len(message), string(message[:20]))
 	header, err := Parse(message)
 	if err != nil {
@@ -83,6 +96,27 @@ func upload(w http.ResponseWriter, r *http.Request) {
 		}
 	} else {
 		target_conn.Write(message)
+	}
+
+	go socket_to_websocket(c, target_conn)
+	websocket_to_socket(c, target_conn)
+}
+
+func update_socks5_proxy(c *websocket.Conn, mt int, message []byte) {
+	buf := make([]byte, 2048)
+	buf_dummy := make([]byte, 0)
+	copy(buf, message) // Assuming is small enough so buf can store all of its content
+	wca := &WsConnAdaptor{c, buf_dummy}
+	//remote_host, err := socks5_handshake(wca, message, len(message))
+	remote_host, err := socks5_handshake(wca, buf, len(message))
+	if err != nil {
+		fmt.Println("SOCKS5 handshake fail", err)
+		return
+	}
+	target_conn, err := net.Dial("tcp", remote_host)
+	if err != nil {
+		log.Println("Error Dial to target conn:", remote_host)
+		return
 	}
 
 	go socket_to_websocket(c, target_conn)
@@ -123,7 +157,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	fmt.Println("start server")
+	fmt.Println("start xisocks 0.4 server")
 
 	//addr := "127.0.0.1:80"
 	config := loadConfig()

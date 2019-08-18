@@ -17,6 +17,11 @@ func main() {
 	RemotePort := strconv.Itoa(config.RemotePort)
 	LocalIp := config.LocalIp
 	LocalPort := strconv.Itoa(config.LocalPort)
+	TLS := config.TLS
+
+	if TLS {
+		fmt.Println("Use TLS")
+	}
 
 	// https://coderwall.com/p/wohavg/creating-a-simple-tcp-server-in-go
 	l, err := net.Listen("tcp", LocalIp+":"+LocalPort)
@@ -37,7 +42,7 @@ func main() {
 			os.Exit(1)
 		}
 		// Handle connections in a new goroutine.
-		go handleRequest(conn, RemoteIp+":"+RemotePort, config.TLS)
+		go handleRequest(conn, RemoteIp+":"+RemotePort, TLS)
 	}
 }
 
@@ -81,7 +86,7 @@ func handleRequest(local_c net.Conn, addr string, TLS bool) {
 		}
 	}()
 
-	buf := make([]byte, 2048)
+	buf := make([]byte, 8192)
 
 	for {
 		readLen, err := local_c.Read(buf)

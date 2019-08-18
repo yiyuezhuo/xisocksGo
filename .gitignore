@@ -6,3 +6,4 @@ release/
 *.key
 *.exe
 *.bak
+debug/
